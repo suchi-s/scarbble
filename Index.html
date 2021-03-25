@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>
+		SCRABBLE GAME
+	</title>
+</head>
+
+<body>
+	<header>
+		<h1>GUESS THE WORD</h1>
+	</header>
+
+	<section>
+		<div class="game">
+			<h4></h4>
+			<h3 class="msg"></h3>
+			<input type="text" class="hidden">
+			<button class="btn">Click Here To Start</button>
+		</div>
+	</section>
+
+
+
+	<script>
+		const msg = document.querySelector('.msg');
+		const guess = document.querySelector('input');
+		const btn = document.querySelector('.btn');
+		let play = false;
+		let newWords = "";
+		let randomWords = "";
+
+
+		let sWords = ['corona', 'life', 'sophisticated', 'limewater', 'quarantine', 'amazing', 'python', 'calender', 'virus',
+			'sql', 'webdevelopment', 'jarvis', 'poland', 'software', 'lockdown'
+		];
+
+		const createNewWords = () => {
+			let randNum = Math.floor(Math.random() * sWords.length);
+			//console.log(randNum);
+			let newTempSwords = sWords[randNum];
+			//console.log(newTempSwords);
+			return newTempSwords;
+
+		}
+
+
+		const scrabbleWords = (arr) => {
+			for (let i = arr.length - 1; i > 0; i--) {
+				let temp = arr[i];
+				//console.log(temp);
+				let j = Math.floor(Math.random() * (i + 1));
+				//console.log(i);
+				//console.log(j);
+				arr[i] = arr[j];
+				arr[j] = temp;
+			}
+			return arr;
+
+		}
+
+
+
+		btn.addEventListener('click', function () {
+			if (!play) {
+				play = true;
+				btn.innerHTML = "Guess";
+				guess.classList.toggle('hidden');
+				newWords = createNewWords();
+				randomWords = scrabbleWords(newWords.split("")).join("");
+				//console.log(randomWords.join(""));
+				msg.innerHTML = `Guess The Word : ${randomWords}`;
+			} else {
+				let tempWord = guess.value;
+				if (tempWord === newWords) {
+					play = false;
+
+					msg.innerHTML = `Awesome!! Your guess is correct.
+    				                 It is "${newWords}"`;
+					btn.innerHTML = "Start Again";
+					guess.classList.toggle('hidden');
+					guess.value = "";
+
+
+				} else {
+					msg.innerHTML = `Oops!! Wrong Guess.Try Again ${randomWords}`;
+
+
+				}
+			}
+		});
+	</script>
+
+</body>
+
+</html>
